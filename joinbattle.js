@@ -85,13 +85,20 @@ exports.setup = function (App) {
 			},
 			"message": function (msg) {
 				if (msg.includes('|l|')) {
-					let user = msg.split('\n')[1].slice(3);
-					user = toID(user);
-					if (watchedUsers.has(user)) {
-						let room = msg.split('\n')[0].slice(1);
-						if (joinedBattles.has(room)) {
-							roomsToLeave.add(room);
+					let room;
+					let user;
+					let lines = msg.split('/n');
+					for (const line of lines) {
+						if (line.startsWith('>')) {
+							room = line.slice(1);
 						}
+						if (line.startsWith('|l|')) {
+							user = line.slice(3).trim();
+							user = toID(user);
+						}
+					}
+					if (watchedUsers.has(user) && joinedBattles.has(room)) {
+						roomsToLeave.add(room);
 					}
 				}
 			}
