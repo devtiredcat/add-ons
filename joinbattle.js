@@ -63,7 +63,6 @@ exports.setup = function (App) {
 				}
 				for (const room of [...roomsToLeave]) {
 					if (!(room in data.rooms)) {
-						console.log('leaving', room);
 						App.bot.sendTo('', `/leave ${room}`);
 						joinedBattles.delete(room);
 						roomsToLeave.delete(room);
