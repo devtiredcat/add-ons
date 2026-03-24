@@ -6,7 +6,7 @@ exports.setup = function (App) {
 			"pm": function (from, message) {
 				if (!message.startsWith('/') && !message.startsWith('$')) {
 					console.log(from, ':', message);
-					execFile("./../alert.sh", [from, message]);
+					execFile("./alert.sh", [from, message]);
 					App.bot.pm(from, 'Message Received.');
 				}
 			},

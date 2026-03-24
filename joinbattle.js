@@ -87,7 +87,7 @@ exports.setup = function (App) {
 				if (msg.includes('|l|')) {
 					let room;
 					let user;
-					let lines = msg.split('/n');
+					let lines = msg.split('\n');
 					for (const line of lines) {
 						if (line.startsWith('>')) {
 							room = line.slice(1);
