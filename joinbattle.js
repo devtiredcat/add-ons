@@ -52,7 +52,7 @@ exports.setup = function (App) {
 			}
 		},
 		events: {
-			"queryresponse": function (json_response) {
+			queryresponse(json_response) {
 				const data = JSON.parse(json_response.slice(12));
 				if (data.autoconfirmed !== true || (data.status && data.status.includes('(Idle)'))) {
 					const user = data.userid;
@@ -84,23 +84,10 @@ exports.setup = function (App) {
 					});
 				}
 			},
-			"message": function (msg) {
-				if (msg.includes('|l|')) {
-					let room;
-					let user;
-					let lines = msg.split('\n');
-					for (const line of lines) {
-						if (line.startsWith('>')) {
-							room = line.slice(1);
-						}
-						if (line.startsWith('|l|')) {
-							user = line.slice(3).trim();
-							user = toID(user);
-						}
-					}
-					if (watchedUsers.has(user) && joinedBattles.has(room)) {
-						roomsToLeave.add(room);
-					}
+			userleave(room, user) {
+				user = toID(user);
+				if (watchedUsers.has(user) && joinedBattles.has(room)) {
+					roomsToLeave.add(room);
 				}
 			}
 		}
