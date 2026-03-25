@@ -1,5 +1,5 @@
 'use strict';
-const debug = false;
+const debug = true;
 if (debug) {
 	exports.setup = function (App) {
 		return Tools('add-on').forApp(App).install({

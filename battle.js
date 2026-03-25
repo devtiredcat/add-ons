@@ -54,8 +54,7 @@ const formats = new Set([
 exports.setup = function (App) {
 	return Tools('add-on').forApp(App).install({
 		commands: {
-			"battle": "battlecommand",
-			"battlecommand": function (_App, context) {
+			battle(_App, context) {
 				const format = context.arg;
 				console.log(format);
 				if (!format) {

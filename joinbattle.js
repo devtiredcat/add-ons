@@ -12,7 +12,7 @@ exports.setup = function (App) {
 	let pollInterval = null;
 	return Tools('add-on').forApp(App).install({
 		commands: {
-			"watchme": function (_App, context) {
+			watchme(_App, context) {
 				let user;
 				if (context.arg) user = context.arg;
 				else user = this.byIdent.id;
@@ -30,7 +30,7 @@ exports.setup = function (App) {
 				    }
 				}
 			},
-			"stopit": function (_App, context) {
+			stopit(_App, context) {
 				let user;
 				if (context.arg) user = context.arg;
 				else user = this.byIdent.id;
