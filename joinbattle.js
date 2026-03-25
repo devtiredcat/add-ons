@@ -12,12 +12,14 @@ exports.setup = function (App) {
 	let pollInterval = null;
 	return Tools('add-on').forApp(App).install({
 		commands: {
-			"watchme": function () {
-				const user = this.byIdent.id;
+			"watchme": function (_App, context) {
+				let user;
+				if (context.arg) user = context.arg;
+				else user = this.byIdent.id;
 				if (watchedUsers.has(user)) {
-					this.reply('Already watching you.');
+					this.reply(`Already watching ${user}.`);
 				} else {
-					this.reply(`Started watching ${this.byIdent.name}`);
+					this.reply(`Started watching ${user}`);
 					watchedUsers.add(user);
 					if (!pollInterval) {
 					    pollInterval = setInterval(() => {
@@ -28,10 +30,12 @@ exports.setup = function (App) {
 				    }
 				}
 			},
-			"stopit": function () {
-				const user = this.byIdent.id;
+			"stopit": function (_App, context) {
+				let user;
+				if (context.arg) user = context.arg;
+				else user = this.byIdent.id;
 				if (watchedUsers.has(user)) {
-					this.reply(`Stopped watching ${this.byIdent.name}`);
+					this.reply(`Stopped watching ${user}`);
 					watchedUsers.delete(user);
 					if (watchedUsers.size === 0) {
 						for (const room of joinedBattles) {
@@ -43,14 +47,14 @@ exports.setup = function (App) {
 						pollInterval = null;
 					}
 				} else {
-					this.reply('Not watching you.');
+					this.reply(`Not watching ${user}.`);
 				}
 			}
 		},
 		events: {
 			"queryresponse": function (json_response) {
 				const data = JSON.parse(json_response.slice(12));
-				if (data.status && data.status.includes('(Idle)')) {
+				if (data.autoconfirmed !== true || (data.status && data.status.includes('(Idle)'))) {
 					const user = data.userid;
 					watchedUsers.delete(user);
 					if (watchedUsers.size === 0) {
@@ -68,9 +72,7 @@ exports.setup = function (App) {
 						roomsToLeave.delete(room);
 					}
 				}
-				if (!data.rooms) {
-					return;
-				} else if (Object.keys(data.rooms).length !== 0) {
+				if (Object.keys(data.rooms).length !== 0) {
 					Object.keys(data.rooms).forEach(room => {
 						if (room.startsWith('☆')) {
 							room = room.slice(1);
