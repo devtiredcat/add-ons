@@ -54,7 +54,7 @@ exports.setup = function (App) {
 		events: {
 			queryresponse(json_response) {
 				const data = JSON.parse(json_response.slice(12));
-				if (data.autoconfirmed !== true || (data.status && data.status.includes('(Idle)'))) {
+				if (data.autoconfirmed !== true || data.status === "!(Idle) )") {
 					const user = data.userid;
 					watchedUsers.delete(user);
 					if (watchedUsers.size === 0) {

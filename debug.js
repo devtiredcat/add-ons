@@ -1,5 +1,5 @@
 'use strict';
-const debug = true;
+const debug = false;
 if (debug) {
 	exports.setup = function (App) {
 		return Tools('add-on').forApp(App).install({
@@ -26,7 +26,8 @@ if (debug) {
 					console.error(`Debug: Renamed Failed. type=${type}, nick=${nick}, pass=${pass}`);
 				},
 				send(msg) {
-					console.log('Debug: ', 'Message sent:', msg);
+					if (msg.includes('/cmd userdetails palbot')) return;
+					else console.log('Debug: ', 'Message sent:', msg);
 				},
 				formats(formats_data) {
 					console.log('Debug: ', 'Formats received', formats_data);
@@ -38,7 +39,8 @@ if (debug) {
 					console.log(`Debug: Bot updated. nick=${nick}, named=${named}, avatar=${avatar}`);
 				},
 				queryresponse(json_response) {
-					console.log('Debug: ', 'queryresponse: ', json_response);
+					if (JSON.parse(json_response.slice(12)).id.includes('palbot')) return;
+					else console.log('Debug: ', 'queryresponse: ', json_response);
 				},
 				popup(popup_body) {
 					console.log('Debug: ', 'Popup', popup_body);
