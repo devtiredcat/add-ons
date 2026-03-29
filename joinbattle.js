@@ -54,7 +54,7 @@ exports.setup = function (App) {
 		events: {
 			queryresponse(json_response) {
 				const data = JSON.parse(json_response.slice(12));
-				if (data.autoconfirmed !== true || data.status === "!(Idle) )") {
+				if (data.autoconfirmed !== true || data.status === '!(Idle) ') {
 					const user = data.userid;
 					watchedUsers.delete(user);
 					if (watchedUsers.size === 0) {
@@ -66,13 +66,13 @@ exports.setup = function (App) {
 					}
 				}
 				for (const room of [...roomsToLeave]) {
-					if (!(room in data.rooms)) {
+					if (!data.rooms || !(room in data.rooms)) {
 						App.bot.sendTo('', `/leave ${room}`);
 						joinedBattles.delete(room);
 						roomsToLeave.delete(room);
 					}
 				}
-				if (Object.keys(data.rooms).length !== 0) {
+				if (data.rooms && Object.keys(data.rooms).length !== 0) {
 					Object.keys(data.rooms).forEach(room => {
 						if (room.startsWith('☆')) {
 							room = room.slice(1);

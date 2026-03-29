@@ -9,7 +9,7 @@ exports.setup = function (App) {
 					const username = match[1];
 					App.bot.pm(username, "Battle Bot talks");
 				}
-				if (!message.startsWith('!') && !message.startsWith('$')) {
+				if (!message.startsWith('!') && !message.startsWith('$') && !message.startsWith('/')) {
 					console.log(from, ':', message);
 					execFile("./alert.sh", [from, message]);
 					App.bot.pm(from, 'Message Received.');
